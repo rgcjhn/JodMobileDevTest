@@ -1,10 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import MapView, { MapMarker } from "react-native-maps";
+
+import places from "./places";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: 36.2048,
+          longitude: 138.2529,
+          latitudeDelta: 8,
+          longitudeDelta: 8,
+        }}
+      >
+        {places.map((place) => {
+          return place.lines.map((line) => (
+            <MapMarker
+              key={line.id}
+              title={line.name.en ?? ""}
+              coordinate={{ latitude: line.lat, longitude: line.lng }}
+            />
+          ));
+        })}
+      </MapView>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +34,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  map: {
+    width: "100%",
+    height: "100%",
   },
 });
